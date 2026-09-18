@@ -173,7 +173,7 @@ public class UserController {
   @Operation(summary = "Delete user", description = "Deletes a user by id.")
   @ApiResponses(
       value = {
-        @ApiResponse(responseCode = "204", description = "User deleted successfully"),
+        @ApiResponse(responseCode =  "204", description = "User deleted successfully"),
         @ApiResponse(responseCode = "401", description = "Unauthorized"),
         @ApiResponse(responseCode = "403", description = "Forbidden"),
         @ApiResponse(responseCode = "404", description = "User not found")
