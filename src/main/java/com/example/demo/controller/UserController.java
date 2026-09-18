@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("users")
+@PreAuthorize("hasAuthority('ADMIN')")
 @Tag(name = "User Management", description = "APIs for creating, updating, and managing users")
 public class UserController {
   private final UserService userService;
@@ -53,7 +54,7 @@ public class UserController {
         @ApiResponse(responseCode = "403", description = "Forbidden")
       })
   @SecurityRequirement(name = "Bearer Authentication")
-  @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('user:view')")
+  @PreAuthorize(" hasAuthority('user:view')")
   @GetMapping
   public ResponseEntity<UserListResponseDto> getUsers(
       @Parameter(description = "Page number, starting from 1") @RequestParam(required = false)
@@ -82,7 +83,7 @@ public class UserController {
         @ApiResponse(responseCode = "403", description = "Forbidden")
       })
   @SecurityRequirement(name = "Bearer Authentication")
-  @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('user:manage')")
+  @PreAuthorize(" hasAuthority('user:manage')")
   @PostMapping
   public ResponseEntity<UsersDto> createUser(@Valid @RequestBody CreateUserRequestDto user) {
     UsersDto createdUser = userService.createUser(user);
@@ -106,7 +107,7 @@ public class UserController {
         @ApiResponse(responseCode = "403", description = "Forbidden")
       })
   @SecurityRequirement(name = "Bearer Authentication")
-  @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('user:manage')")
+  @PreAuthorize(" hasAuthority('user:manage')")
   @PostMapping("/invite")
   public ResponseEntity<UsersDto> inviteUser(@Valid @RequestBody InviteUserRequestDto user) {
     return ResponseEntity.status(HttpStatus.CREATED).body(userService.inviteUser(user));
@@ -130,7 +131,7 @@ public class UserController {
         @ApiResponse(responseCode = "404", description = "User not found")
       })
   @SecurityRequirement(name = "Bearer Authentication")
-  @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('user:manage')")
+  @PreAuthorize(" hasAuthority('user:manage')")
   @PutMapping("/{id}")
   public ResponseEntity<UsersDto> updateUser(
       @PathVariable String id, @Valid @RequestBody UpdateUserRequestDto user) {
@@ -146,7 +147,7 @@ public class UserController {
         @ApiResponse(responseCode = "404", description = "User not found")
       })
   @SecurityRequirement(name = "Bearer Authentication")
-  @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('user:manage')")
+  @PreAuthorize(" hasAuthority('user:manage')")
   @PostMapping("/{id}/suspend")
   public ResponseEntity<Void> suspendUser(@PathVariable String id) {
     userService.suspendUser(id);
@@ -162,7 +163,7 @@ public class UserController {
         @ApiResponse(responseCode = "404", description = "User not found")
       })
   @SecurityRequirement(name = "Bearer Authentication")
-  @PreAuthorize("hasAuthority('ADMIN') and hasAuthority('user:manage')")
+  @PreAuthorize(" hasAuthority('user:manage')")
   @PostMapping("/{id}/reactivate")
   public ResponseEntity<Void> reactivateUser(@PathVariable String id) {
     userService.reactivateUser(id);
@@ -178,7 +179,7 @@ public class UserController {
         @ApiResponse(responseCode = "404", description = "User not found")
       })
   @SecurityRequirement(name = "Bearer Authentication")
-  @PreAuthorize("hasAuthority('ADMIN') and hasAuthority('user:manage')")
+  @PreAuthorize(" hasAuthority('user:manage')")
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteUser(@PathVariable String id) {
     userService.deleteUser(id);
